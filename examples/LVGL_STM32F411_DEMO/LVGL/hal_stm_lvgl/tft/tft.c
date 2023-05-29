@@ -91,7 +91,7 @@ void tft_init(void)
 static void disp_init(void)
 {
     /*You code here*/
-	ILI9341_Init(DISP_ROT_Inv_Portrait);
+	ILI9341_Init(DISP_ROT_Portrait);
 
 }
 
