@@ -200,13 +200,13 @@ extern  SPI_HandleTypeDef ILI9341_SPI_PORT;
 #define ILI9341_PRC                 0xF7   /* Pump ratio control register */
 
 /*Variables*/
-struct Disp{
+typedef struct {
 	uint16_t xstart;
 	uint16_t ystart;
 	uint16_t width;
 	uint16_t height;
 	uint8_t rotation;
-}Disp;
+} Disp_struct;
 
 /* Functions*/
 void ILI9341_Select(void);

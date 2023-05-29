@@ -29,6 +29,8 @@ static void disp_flush(lv_disp_drv_t * disp_drv, const lv_area_t * area, lv_colo
 /**********************
  *  STATIC VARIABLES
  **********************/
+extern Disp_struct Disp;
+
 static lv_disp_drv_t disp_drv;                         /*Descriptor of a display driver*/
 #if SPI_DMA
 //static lv_disp_drv_t * disp_p;
@@ -89,7 +91,7 @@ void tft_init(void)
 static void disp_init(void)
 {
     /*You code here*/
-	ILI9341_Init(DISP_ROT_Landscape);
+	ILI9341_Init(DISP_ROT_Inv_Portrait);
 
 }
 

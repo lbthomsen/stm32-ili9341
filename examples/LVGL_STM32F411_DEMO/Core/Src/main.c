@@ -111,11 +111,24 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+
+  uint32_t now = 0, last_blink = 0, last_lv = 0;
+
   while (1)
   {
-	  HAL_Delay(25);
-	  lv_task_handler();
-	  HAL_GPIO_TogglePin(USER_LED_GPIO_Port, USER_LED_Pin);
+
+	  now = HAL_GetTick();
+
+	  if (now - last_blink >= 500) {
+		  HAL_GPIO_TogglePin(USER_LED_GPIO_Port, USER_LED_Pin);
+		  last_blink = now;
+	  }
+
+	  if (now - last_lv >= 25) {
+		  lv_task_handler();
+		  last_lv = now;
+	  }
+
 	  //ILI9341_Test();
 	  //HAL_GPIO_TogglePin(USER_LED_GPIO_Port, USER_LED_Pin);
 

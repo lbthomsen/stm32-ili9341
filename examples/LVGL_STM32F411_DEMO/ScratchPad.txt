@@ -1,0 +1,8 @@
+./LVGL/hal_stm_lvgl/tft/tft.o:/home/lth/src/stm32-ili9341/examples/LVGL_STM32F411_DEMO/Debug/../LVGL/hal_stm_lvgl/tft/ili9341.h:209
+./LVGL/hal_stm_lvgl/tft/ili9341.o:/home/lth/src/stm32-ili9341/examples/LVGL_STM32F411_DEMO/Debug/../LVGL/hal_stm_lvgl/tft/ili9341.h:209
+
+: multiple definition of `Disp'; 
+
+
+
+: first defined here

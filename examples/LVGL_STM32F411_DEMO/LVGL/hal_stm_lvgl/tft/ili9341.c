@@ -6,6 +6,8 @@
  */
 #include "ili9341.h"
 
+Disp_struct Disp;
+
 /**
  * LCD DC Set
  *

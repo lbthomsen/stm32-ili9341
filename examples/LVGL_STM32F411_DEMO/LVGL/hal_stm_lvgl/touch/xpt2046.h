@@ -24,7 +24,7 @@ extern "C" {
 #define XPT2046_SPI_PORT	hspi2
 extern  SPI_HandleTypeDef 	XPT2046_SPI_PORT;
 
-#define XPT2046_XY_SWAP  		0
+#define XPT2046_XY_SWAP  		1
 #define XPT2046_X_INV   		0
 #define XPT2046_Y_INV   		0
 
@@ -53,7 +53,7 @@ extern  SPI_HandleTypeDef 	XPT2046_SPI_PORT;
 #endif
 
 /*Variables*/
-struct Touchpad{
+typedef struct {
 	uint16_t width;
 	uint16_t height;
 	uint16_t x_min;
@@ -64,7 +64,7 @@ struct Touchpad{
 	int16_t avg_buf_x[XPT2046_AVG];
 	int16_t avg_buf_y[XPT2046_AVG];
 	uint8_t avg_last;
-}Touchpad;
+} Touchpad_struct;
 
 
 /* Functions*/

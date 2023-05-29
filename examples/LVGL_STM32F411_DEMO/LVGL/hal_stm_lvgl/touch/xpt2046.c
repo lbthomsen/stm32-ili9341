@@ -7,6 +7,9 @@
 
 #include "xpt2046.h"
 
+extern Disp_struct Disp;
+
+Touchpad_struct Touchpad;
 
 /**
  * TOUCH Select
