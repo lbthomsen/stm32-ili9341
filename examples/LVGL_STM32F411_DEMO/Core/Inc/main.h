@@ -32,7 +32,9 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#ifdef DEBUG
+#include <stdio.h>
+#endif
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
@@ -87,6 +89,13 @@ void MX_SPI1_Init(void);
 #define TOUCH_MOSI_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
+
+#ifdef DEBUG
+#define DBG(...)    printf(__VA_ARGS__);\
+                    printf("\n");
+#else
+#define DBG(...)
+#endif
 
 /* USER CODE END Private defines */
 

@@ -25,7 +25,7 @@ extern "C" {
 extern  SPI_HandleTypeDef 	XPT2046_SPI_PORT;
 
 #define XPT2046_XY_SWAP  		0
-#define XPT2046_X_INV   		0
+#define XPT2046_X_INV   		1
 #define XPT2046_Y_INV   		0
 
 #define XPT2046_Y_ADDR 			0x90

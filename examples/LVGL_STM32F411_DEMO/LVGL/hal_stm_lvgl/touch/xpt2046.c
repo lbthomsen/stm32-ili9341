@@ -123,6 +123,8 @@ void XPT2046_Corr(uint16_t * x, uint16_t * y)
     *y = swap_tmp;
 #endif
 
+    //DBG("XPT2046_Corr orig x=%d y=%d", *x, *y);
+
     if((*x) > Touchpad.x_min )
     {
     	(*x) -= Touchpad.x_min ;
@@ -145,16 +147,18 @@ void XPT2046_Corr(uint16_t * x, uint16_t * y)
 	{
 		(*x) = (uint32_t)((uint32_t)(*x) * Touchpad.width) / (Touchpad.x_max - Touchpad.x_min );
 		(*y) = (uint32_t)((uint32_t)(*y) * Touchpad.height) / (Touchpad.y_max - Touchpad.y_min);
-		(*x) =  Touchpad.width - (*x);
-		(*y) =  Touchpad.height - (*y);
+		if (XPT2046_X_INV) (*x) =  Touchpad.width - (*x);
+		if (XPT2046_Y_INV) (*y) =  Touchpad.height - (*y);
     }
     else
     {
 		(*x) = (uint32_t)((uint32_t)(*x) * Touchpad.height) / (Touchpad.x_max - Touchpad.x_min );
 		(*y) = (uint32_t)((uint32_t)(*y) * Touchpad.width) / (Touchpad.y_max - Touchpad.y_min);
+		if (XPT2046_X_INV) (*x) = Touchpad.height - (*x);
+		if (XPT2046_Y_INV) (*y) = Touchpad.width - (*y);
     }
 
-
+    //DBG("XPT2046_Corr corr x=%d y=%d", *x, *y);
 
 }
 
