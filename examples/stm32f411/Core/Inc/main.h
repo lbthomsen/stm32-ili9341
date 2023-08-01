@@ -31,7 +31,9 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#ifdef DEBUG
+#include <stdio.h>
+#endif
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
@@ -57,10 +59,25 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define SPI1_CS_Pin GPIO_PIN_4
-#define SPI1_CS_GPIO_Port GPIOA
+#define LED_Pin GPIO_PIN_13
+#define LED_GPIO_Port GPIOC
+#define BTN_Pin GPIO_PIN_0
+#define BTN_GPIO_Port GPIOA
+#define CS3_Pin GPIO_PIN_2
+#define CS3_GPIO_Port GPIOA
+#define CS2_Pin GPIO_PIN_3
+#define CS2_GPIO_Port GPIOA
+#define CS1_Pin GPIO_PIN_4
+#define CS1_GPIO_Port GPIOA
 
 /* USER CODE BEGIN Private defines */
+
+#ifdef DEBUG
+#define DBG(...)    printf(__VA_ARGS__);\
+                    printf("\n")
+#else
+#define DBG(...)
+#endif
 
 /* USER CODE END Private defines */
 
