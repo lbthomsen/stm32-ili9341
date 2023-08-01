@@ -72,7 +72,9 @@ void ILI9341_Deselect(void)
 static void ILI9341_DisplayOn(void)
 {
 	#if BLK_ENABLE
-	ILI9341_BLK_High();
+	//ILI9341_BLK_High();
+	ILI9341_BLK_Low();
+	//HAL_GPIO_WritePin(LCD_BLK_GPIO_Port, LCD_BLK_Pin, GPIO_PIN_RESET);
 	#endif
 }
 
@@ -86,7 +88,9 @@ static void ILI9341_DisplayOn(void)
 static void ILI9341_DisplayOff(void)
 {
 	#if BLK_ENABLE
-	ILI9341_BLK_Low();
+	//ILI9341_BLK_Low();
+	ILI9341_BLK_High();
+	//HAL_GPIO_WritePin(LCD_BLK_GPIO_Port, LCD_BLK_Pin, GPIO_PIN_SET);
 	#endif
 }
 
@@ -474,7 +478,7 @@ void ILI9341_Init(uint8_t rotation) {
 	//TURN ON DISPLAY
 	ILI9341_Write_Cmd(0x29);
 	//ILI9341_Fill_Color(color);
-	//ILI9341_DisplayOn();
+	ILI9341_DisplayOn();
 
 	//STARTING ROTATION
 

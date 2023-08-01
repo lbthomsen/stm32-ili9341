@@ -116,7 +116,7 @@ void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef *hspi)
 {
 	lv_disp_flush_ready(&disp_drv);
     ILI9341_Deselect();
-    GPIOA->ODR |= GPIO_PIN_4;
+    //GPIOA->ODR |= GPIO_PIN_4;
 }
 
 void HAL_SPI_ErrorCallback(SPI_HandleTypeDef *hspi)

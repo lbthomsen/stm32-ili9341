@@ -52,7 +52,7 @@ TIM_HandleTypeDef htim3;
 UART_HandleTypeDef huart1;
 
 /* USER CODE BEGIN PV */
-
+GPIO_TypeDef *gpioa = GPIOA;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -127,6 +127,9 @@ int main(void)
   touchpad_init();
 
   lv_demo_widgets();
+  //lv_demo_stress();
+
+  //HAL_GPIO_WritePin(LCD_BLK_GPIO_Port, LCD_BLK_Pin, GPIO_PIN_RESET);
 
   HAL_TIM_Base_Start_IT(&htim3);
 
@@ -151,6 +154,7 @@ int main(void)
 
 	  if (now - last_lv >= 25) {
 		  lv_task_handler();
+		  //HAL_GPIO_WritePin(LCD_BLK_GPIO_Port, LCD_BLK_Pin, GPIO_PIN_RESET);
 		  last_lv = now;
 	  }
 

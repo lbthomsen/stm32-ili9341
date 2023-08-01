@@ -17,7 +17,7 @@
 //Set LCD Hardware Control and Frame lines
 #define RST_ENABLE 1	// If you are using RTS PIN
 #define CS_ENABLE  1	// If you are using CS PIN
-#define TE_ENABLE  0  	//TE_ENABLE do not supported yet, do not use!
+#define TE_ENABLE  0  	// TE_ENABLE do not supported yet, do not use!
 #define BLK_ENABLE 1 	// If you are using BLK PIN
 
 
