@@ -25,25 +25,25 @@
 
 // ------------------------------------------------------- exported variables --
 
-ili9341_color_t const ILI9341_BLACK        = (ili9341_color_t)0x0000;
-ili9341_color_t const ILI9341_NAVY         = (ili9341_color_t)0x000F;
-ili9341_color_t const ILI9341_DARKGREEN    = (ili9341_color_t)0x03E0;
-ili9341_color_t const ILI9341_DARKCYAN     = (ili9341_color_t)0x03EF;
-ili9341_color_t const ILI9341_MAROON       = (ili9341_color_t)0x7800;
-ili9341_color_t const ILI9341_PURPLE       = (ili9341_color_t)0x780F;
-ili9341_color_t const ILI9341_OLIVE        = (ili9341_color_t)0x7BE0;
-ili9341_color_t const ILI9341_LIGHTGREY    = (ili9341_color_t)0xC618;
-ili9341_color_t const ILI9341_DARKGREY     = (ili9341_color_t)0x7BEF;
-ili9341_color_t const ILI9341_BLUE         = (ili9341_color_t)0x001F;
-ili9341_color_t const ILI9341_GREEN        = (ili9341_color_t)0x07E0;
-ili9341_color_t const ILI9341_CYAN         = (ili9341_color_t)0x07FF;
-ili9341_color_t const ILI9341_RED          = (ili9341_color_t)0xF800;
-ili9341_color_t const ILI9341_MAGENTA      = (ili9341_color_t)0xF81F;
-ili9341_color_t const ILI9341_YELLOW       = (ili9341_color_t)0xFFE0;
-ili9341_color_t const ILI9341_WHITE        = (ili9341_color_t)0xFFFF;
-ili9341_color_t const ILI9341_ORANGE       = (ili9341_color_t)0xFD20;
-ili9341_color_t const ILI9341_GREENYELLOW  = (ili9341_color_t)0xAFE5;
-ili9341_color_t const ILI9341_PINK         = (ili9341_color_t)0xF81F;
+//ili9341_color_t const ILI9341_BLACK        = (ili9341_color_t)0x0000;
+//ili9341_color_t const ILI9341_NAVY         = (ili9341_color_t)0x000F;
+//ili9341_color_t const ILI9341_DARKGREEN    = (ili9341_color_t)0x03E0;
+//ili9341_color_t const ILI9341_DARKCYAN     = (ili9341_color_t)0x03EF;
+//ili9341_color_t const ILI9341_MAROON       = (ili9341_color_t)0x7800;
+//ili9341_color_t const ILI9341_PURPLE       = (ili9341_color_t)0x780F;
+//ili9341_color_t const ILI9341_OLIVE        = (ili9341_color_t)0x7BE0;
+//ili9341_color_t const ILI9341_LIGHTGREY    = (ili9341_color_t)0xC618;
+//ili9341_color_t const ILI9341_DARKGREY     = (ili9341_color_t)0x7BEF;
+//ili9341_color_t const ILI9341_BLUE         = (ili9341_color_t)0x001F;
+//ili9341_color_t const ILI9341_GREEN        = (ili9341_color_t)0x07E0;
+//ili9341_color_t const ILI9341_CYAN         = (ili9341_color_t)0x07FF;
+//ili9341_color_t const ILI9341_RED          = (ili9341_color_t)0xF800;
+//ili9341_color_t const ILI9341_MAGENTA      = (ili9341_color_t)0xF81F;
+//ili9341_color_t const ILI9341_YELLOW       = (ili9341_color_t)0xFFE0;
+//ili9341_color_t const ILI9341_WHITE        = (ili9341_color_t)0xFFFF;
+//ili9341_color_t const ILI9341_ORANGE       = (ili9341_color_t)0xFD20;
+//ili9341_color_t const ILI9341_GREENYELLOW  = (ili9341_color_t)0xAFE5;
+//ili9341_color_t const ILI9341_PINK         = (ili9341_color_t)0xF81F;
 
 // ------------------------------------------------------- private variables --
 

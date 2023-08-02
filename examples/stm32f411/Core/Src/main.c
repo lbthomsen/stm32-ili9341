@@ -52,19 +52,6 @@ UART_HandleTypeDef huart1;
 
 ili9341_t *_screen;
 
-const ili9341_color_t demo_colors[] = {
-        0xC618,
-        0x07E0,
-        0x07FF,
-        0xF81F,
-        0xFFE0,
-        0xFD20,
-        0xAFE5,
-        0xF81F,
-        0xF800,
-        0x001F
-};
-
 uint8_t blank = 1;
 uint8_t demo = 0;
 
@@ -189,7 +176,7 @@ int main(void)
     ili9341_set_touch_pressed_begin(_screen, screenTouchBegin);
     ili9341_set_touch_pressed_end(_screen, screenTouchEnd);
 
-    ili9341_fill_screen(_screen, ILI9341_BLACK);
+    ili9341_fill_screen(_screen, ILI_BLACK);
 
     HAL_GPIO_WritePin(GPIOB, TFT_DC_Pin|TFT_RESET_Pin|TFT_BL_Pin, GPIO_PIN_SET);
 
@@ -207,7 +194,7 @@ int main(void)
         if (now - last_demo >= 100) {
 
             if (blank) {
-                ili9341_fill_screen(_screen, ILI9341_BLACK);
+                ili9341_fill_screen(_screen, ILI_BLACK);
                 blank = 0;
             }
 
@@ -218,7 +205,7 @@ int main(void)
                 int y = rand() % 240;
                 int w = rand() % (360 - x);
                 int h = rand() % (240 - y);
-                int c = demo_colors[rand() % (sizeof(demo_colors) / sizeof(demo_colors[0]))];
+                int c = rand() % 0xffff;
                 ili9341_fill_rect(_screen, c, x, y, w, h);
                 break;
 
