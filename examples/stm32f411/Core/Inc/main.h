@@ -63,12 +63,22 @@ void Error_Handler(void);
 #define LED_GPIO_Port GPIOC
 #define BTN_Pin GPIO_PIN_0
 #define BTN_GPIO_Port GPIOA
-#define CS3_Pin GPIO_PIN_2
-#define CS3_GPIO_Port GPIOA
-#define CS2_Pin GPIO_PIN_3
-#define CS2_GPIO_Port GPIOA
+#define BTN_EXTI_IRQn EXTI0_IRQn
+#define TOUCH_IRQ_Pin GPIO_PIN_1
+#define TOUCH_IRQ_GPIO_Port GPIOA
+#define TOUCH_IRQ_EXTI_IRQn EXTI1_IRQn
+#define TOUCH_CS_Pin GPIO_PIN_2
+#define TOUCH_CS_GPIO_Port GPIOA
+#define TFT_CS_Pin GPIO_PIN_3
+#define TFT_CS_GPIO_Port GPIOA
 #define CS1_Pin GPIO_PIN_4
 #define CS1_GPIO_Port GPIOA
+#define TFT_DC_Pin GPIO_PIN_0
+#define TFT_DC_GPIO_Port GPIOB
+#define TFT_RESET_Pin GPIO_PIN_1
+#define TFT_RESET_GPIO_Port GPIOB
+#define TFT_BL_Pin GPIO_PIN_2
+#define TFT_BL_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 

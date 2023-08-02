@@ -21,7 +21,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "ili9341.h"
+#include "ili9341_gfx.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -31,7 +32,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+#define DEMOS 1
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -41,16 +42,23 @@
 
 /* Private variables ---------------------------------------------------------*/
 SPI_HandleTypeDef hspi1;
+DMA_HandleTypeDef hdma_spi1_tx;
+DMA_HandleTypeDef hdma_spi1_rx;
 
 UART_HandleTypeDef huart1;
 
 /* USER CODE BEGIN PV */
+
+ili9341_t *_screen;
+
+uint8_t demo = 0;
 
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
+static void MX_DMA_Init(void);
 static void MX_SPI1_Init(void);
 static void MX_USART1_UART_Init(void);
 /* USER CODE BEGIN PFP */
@@ -72,6 +80,41 @@ int _write(int fd, char *ptr, int len) {
             return -1;
     }
     return -1;
+}
+
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+  switch (GPIO_Pin)
+  {
+    case TOUCH_IRQ_Pin:
+      ili9341_touch_interrupt(_screen);
+      break;
+
+    case BTN_Pin:
+    	DBG("Next demo");
+    	++demo;
+    	if (demo >= DEMOS) demo = 0;
+		break;
+
+    default:
+      // unhandled interrupt pin
+      break;
+  }
+}
+
+ili9341_t *screen(void)
+{
+  return _screen;
+}
+
+void screenTouchBegin(ili9341_t *lcd, uint16_t x, uint16_t y)
+{
+	DBG("Touch begin");
+}
+
+void screenTouchEnd(ili9341_t *lcd, uint16_t x, uint16_t y)
+{
+  DBG("Touch end");
 }
 
 /* USER CODE END 0 */
@@ -104,22 +147,47 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_SPI1_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
 
     DBG("\n\n\n--------\nStarting");
 
+    _screen = ili9341_new(
+        &hspi1,
+        TFT_RESET_GPIO_Port, TFT_RESET_Pin,
+        TFT_CS_GPIO_Port,    TFT_CS_Pin,
+        TFT_DC_GPIO_Port,    TFT_DC_Pin,
+        isoLandscape,
+        TOUCH_CS_GPIO_Port,  TOUCH_CS_Pin,
+        TOUCH_IRQ_GPIO_Port, TOUCH_IRQ_Pin,
+        itsSupported,
+        itnNormalized);
+
+    ili9341_set_touch_pressed_begin(_screen, screenTouchBegin);
+    ili9341_set_touch_pressed_end(_screen, screenTouchEnd);
+
+    ili9341_fill_screen(_screen, ILI9341_BLACK);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 
-    uint32_t now = 0, last_blink = 0;
+    uint32_t now = 0, last_blink = 0, last_rect = 0;
 
     while (1) {
 
         now = HAL_GetTick();
+
+        if (now - last_rect >= 1000) {
+
+
+        	ili9341_draw_rect(_screen, ILI9341_RED, 10, 10, 200, 100);
+
+        	last_rect = now;
+        }
 
         if (now - last_blink >= 500) {
 
@@ -252,6 +320,25 @@ static void MX_USART1_UART_Init(void)
 }
 
 /**
+  * Enable DMA controller clock
+  */
+static void MX_DMA_Init(void)
+{
+
+  /* DMA controller clock enable */
+  __HAL_RCC_DMA2_CLK_ENABLE();
+
+  /* DMA interrupt init */
+  /* DMA2_Stream0_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA2_Stream0_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA2_Stream0_IRQn);
+  /* DMA2_Stream2_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA2_Stream2_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA2_Stream2_IRQn);
+
+}
+
+/**
   * @brief GPIO Initialization Function
   * @param None
   * @retval None
@@ -266,12 +353,19 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOH_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
+  __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, CS3_Pin|CS2_Pin|CS1_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOA, TOUCH_CS_Pin|TFT_CS_Pin|CS1_Pin, GPIO_PIN_SET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOB, TFT_DC_Pin|TFT_RESET_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(TFT_BL_GPIO_Port, TFT_BL_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin : LED_Pin */
   GPIO_InitStruct.Pin = LED_Pin;
@@ -282,16 +376,36 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pin : BTN_Pin */
   GPIO_InitStruct.Pin = BTN_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING_FALLING;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(BTN_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : CS3_Pin CS2_Pin CS1_Pin */
-  GPIO_InitStruct.Pin = CS3_Pin|CS2_Pin|CS1_Pin;
+  /*Configure GPIO pin : TOUCH_IRQ_Pin */
+  GPIO_InitStruct.Pin = TOUCH_IRQ_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(TOUCH_IRQ_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : TOUCH_CS_Pin TFT_CS_Pin CS1_Pin */
+  GPIO_InitStruct.Pin = TOUCH_CS_Pin|TFT_CS_Pin|CS1_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : TFT_DC_Pin TFT_RESET_Pin TFT_BL_Pin */
+  GPIO_InitStruct.Pin = TFT_DC_Pin|TFT_RESET_Pin|TFT_BL_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(EXTI0_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI0_IRQn);
+
+  HAL_NVIC_SetPriority(EXTI1_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI1_IRQn);
 
 /* USER CODE BEGIN MX_GPIO_Init_2 */
 /* USER CODE END MX_GPIO_Init_2 */
