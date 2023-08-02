@@ -281,7 +281,7 @@ ili9341_touch_pressed_t ili9341_touch_coordinate(ili9341_t *lcd,
 
   // restore SPI clock to maximum for TFT
   // TODO: based on STM32G4, which is clocked at 170MHz. support other chips.
-  MODIFY_REG(lcd->spi_hal->Instance->CR1, SPI_CR1_BR, SPI_BAUDRATEPRESCALER_8);
+  MODIFY_REG(lcd->spi_hal->Instance->CR1, SPI_CR1_BR, SPI_BAUDRATEPRESCALER_2);
 
   if (num_samples < req_samples)
     { return itpNotPressed; }

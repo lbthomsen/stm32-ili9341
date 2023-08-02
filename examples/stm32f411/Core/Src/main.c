@@ -21,6 +21,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <stdlib.h>
 #include "ili9341.h"
 #include "ili9341_gfx.h"
 /* USER CODE END Includes */
@@ -51,6 +52,20 @@ UART_HandleTypeDef huart1;
 
 ili9341_t *_screen;
 
+const ili9341_color_t demo_colors[] = {
+        0xC618,
+        0x07E0,
+        0x07FF,
+        0xF81F,
+        0xFFE0,
+        0xFD20,
+        0xAFE5,
+        0xF81F,
+        0xF800,
+        0x001F
+};
+
+uint8_t blank = 1;
 uint8_t demo = 0;
 
 /* USER CODE END PV */
@@ -67,6 +82,12 @@ static void MX_USART1_UART_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+
+void next_demo() {
+    ++demo;
+    if (demo >= DEMOS) demo = 0;
+    blank = 1;
+}
 
 // Send printf to uart1
 int _write(int fd, char *ptr, int len) {
@@ -170,23 +191,42 @@ int main(void)
 
     ili9341_fill_screen(_screen, ILI9341_BLACK);
 
+    HAL_GPIO_WritePin(GPIOB, TFT_DC_Pin|TFT_RESET_Pin|TFT_BL_Pin, GPIO_PIN_SET);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 
-    uint32_t now = 0, last_blink = 0, last_rect = 0;
+    uint32_t now = 0, last_blink = 0, last_demo = 0;
 
     while (1) {
 
         now = HAL_GetTick();
 
-        if (now - last_rect >= 1000) {
+        if (now - last_demo >= 100) {
 
+            if (blank) {
+                ili9341_fill_screen(_screen, ILI9341_BLACK);
+                blank = 0;
+            }
 
-        	ili9341_draw_rect(_screen, ILI9341_RED, 10, 10, 200, 100);
+            switch (demo) {
 
-        	last_rect = now;
+            case 0:
+                int x = rand() % 360;
+                int y = rand() % 240;
+                int w = rand() % (360 - x);
+                int h = rand() % (240 - y);
+                int c = demo_colors[rand() % (sizeof(demo_colors) / sizeof(demo_colors[0]))];
+                ili9341_fill_rect(_screen, c, x, y, w, h);
+                break;
+
+            default:
+
+            }
+
+        	last_demo = now;
         }
 
         if (now - last_blink >= 500) {
@@ -362,10 +402,7 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOA, TOUCH_CS_Pin|TFT_CS_Pin|CS1_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, TFT_DC_Pin|TFT_RESET_Pin, GPIO_PIN_RESET);
-
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(TFT_BL_GPIO_Port, TFT_BL_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOB, TFT_DC_Pin|TFT_RESET_Pin|TFT_BL_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin : LED_Pin */
   GPIO_InitStruct.Pin = LED_Pin;
