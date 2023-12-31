@@ -255,7 +255,7 @@ ili9341_touch_pressed_t ili9341_touch_coordinate(ili9341_t *lcd,
 
   // change SPI clock to 2MHz, max rate supported by XPT2046
   // TODO: based on STM32G4, which is clocked at 170MHz. support other chips.
-  MODIFY_REG(lcd->spi_hal->Instance->CR1, SPI_CR1_BR, SPI_BAUDRATEPRESCALER_128);
+  MODIFY_REG(lcd->spi_hal->Instance->CR1, SPI_CR1_BR, SPI_BAUDRATEPRESCALER_64);
 
   ili9341_spi_touch_select(lcd);
 
